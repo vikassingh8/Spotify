@@ -12,6 +12,8 @@ recommendations — demonstrating scalability, fault tolerance, security, and pr
 
 ## Architecture at a glance
 
+![Spoty high-level architecture](docs/diagrams/architecture.svg)
+
 ```
 Browser (React) → NGINX gateway → Express microservices → Kafka → Spark → Redis/Postgres → services → Browser
 ```
@@ -29,7 +31,7 @@ Browser (React) → NGINX gateway → Express microservices → Kafka → Spark 
 | Monitoring | Prometheus + Grafana | Azure Monitor + Managed Grafana |
 | Load testing | k6 | — |
 
-Full diagrams: [`docs/diagrams/`](docs/diagrams/).
+Full diagrams (SVG): [`docs/diagrams/`](docs/diagrams/).
 
 ---
 
@@ -115,6 +117,6 @@ stream-processor/ PySpark Structured Streaming job
 frontend/         React 19 + Vite web player
 infra/            gateway (NGINX), k8s manifests, monitoring, load-tests
 data/seed/        DB schema, seed catalog, demo-audio generator
-docs/             6 reports + Mermaid diagrams
+docs/             6 reports + SVG diagrams
 docker-compose.yml
 ```

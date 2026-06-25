@@ -85,7 +85,9 @@ Service), `30-hpa` (autoscalers).
 
 ## 4. Azure Deployment (Managed Services)
 
-Target topology: [`diagrams/deployment-azure.md`](diagrams/deployment-azure.md).
+Target topology:
+
+![Spoty Azure deployment topology](diagrams/deployment-azure.svg)
 
 ### 4.1 Provision (illustrative `az` commands)
 ```bash

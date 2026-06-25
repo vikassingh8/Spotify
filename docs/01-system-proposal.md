@@ -76,14 +76,21 @@ and a globally distributed multi-region deployment (discussed as a future improv
 
 ## 6. High-Level Architecture
 
-See [`diagrams/architecture.md`](diagrams/architecture.md) and
-[`diagrams/data-flow.md`](diagrams/data-flow.md).
+![Spoty high-level architecture](diagrams/architecture.svg)
 
 **Data flow:** `Client → Gateway → Services → Kafka → Spark → Storage → Services → Client`.
 
 Layers: **Client** (React) · **Edge** (NGINX gateway/LB + TLS) · **Services**
 (stateless Express microservices) · **Streaming** (Kafka + Spark) · **Storage**
 (PostgreSQL, Redis, MinIO/Blob) · **Observability** (Prometheus + Grafana).
+
+The real-time event path is shown below:
+
+![Spoty real-time data flow](diagrams/data-flow.svg)
+
+### 6.1 Data Model
+
+![Spoty entity-relationship data model](diagrams/er-model.svg)
 
 ## 7. Technology Choices & Justification
 

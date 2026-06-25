@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: { name: gateway-nginx, namespace: spoty }
+data:
+  nginx.conf: |
+    worker_processes auto;
+    events { worker_connections 1024; }
+    http {
+      include /etc/nginx/mime.types;
+      upstream auth_svc    { server auth-service:4001; }
+      upstream catalog_svc { server catalog-service:4002; }
+      upstream playback_svc{ server playback-service:4003; }
+      upstream reco_svc    { server recommendation-service:4004; }
+      upstream ingest_svc  { server ingestion-producer:4005; }
+      upstream web         { server frontend:80; }
+      server {
+        listen 80;
+        location /api/auth/            { proxy_pass http://auth_svc/; }
+        location /api/catalog/         { proxy_pass http://catalog_svc/; }
+        location /api/playback/        { proxy_pass http://playback_svc/; }
+        location /api/recommendations/ { proxy_pass http://reco_svc/; }
+        location /api/ingestion/       { proxy_pass http://ingest_svc/; }
+        location / { proxy_pass http://web; }
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: gateway, namespace: spoty }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: gateway } }
+  template:
+    metadata: { labels: { app: gateway } }
+    spec:
+      containers:
+        - name: gateway
+          image: nginx:1.27-alpine
+          ports: [{ containerPort: 80 }]
+          volumeMounts:
+            - { name: conf, mountPath: /etc/nginx/nginx.conf, subPath: nginx.conf }
+      volumes:
+        - name: conf
+          configMap: { name: gateway-nginx }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: gateway, namespace: spoty }
+spec:
+  type: LoadBalancer # becomes Azure Load Balancer on AKS; NodePort on minikube
+  selector: { app: gateway }
+  ports: [{ port: 80, targetPort: 80 }]

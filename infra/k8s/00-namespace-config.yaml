@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: spoty
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spoty-config
+  namespace: spoty
+data:
+  POSTGRES_HOST: "postgres"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "spoty"
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  KAFKA_BROKERS: "kafka:9092"
+  KAFKA_EVENTS_TOPIC: "play-events"
+  KAFKA_CLIENT_ID: "spoty"
+  MINIO_ENDPOINT: "minio"
+  MINIO_PORT: "9000"
+  MINIO_BUCKET: "audio"
+  MINIO_PUBLIC_ENDPOINT: "http://localhost:9000"
+  JWT_EXPIRES_IN: "3600s"
+  SIM_USERS: "500"
+  SIM_EVENTS_PER_SEC: "100"
+  SIM_AUTOSTART: "false"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: spoty-secrets
+  namespace: spoty
+type: Opaque
+stringData:
+  POSTGRES_USER: "spoty"
+  POSTGRES_PASSWORD: "spoty_pw"
+  MINIO_ROOT_USER: "spotyadmin"
+  MINIO_ROOT_PASSWORD: "spotyadmin_pw"
+  JWT_SECRET: "change-me-in-prod-super-secret-key"
+  ANONYMIZATION_SALT: "spoty-pseudonym-salt-change-me"

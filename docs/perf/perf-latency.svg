@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="320" font-family="Segoe UI,sans-serif">
+<rect width="560" height="320" fill="#ffffff"/>
+<text x="280.0" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1c1815">Load Test — HTTP latency (ms)</text>
+<line x1="60" y1="260" x2="540" y2="260" stroke="#ddd"/>
+<rect x="78.0" y="209.8" width="97.5" height="50.2" rx="4" fill="#ff7a3d"/>
+<text x="126.8" y="202.8" text-anchor="middle" font-size="12" font-weight="600" fill="#333">44.3ms</text>
+<text x="126.8" y="280.0" text-anchor="middle" font-size="12" fill="#666">avg</text>
+<rect x="193.5" y="249.2" width="97.5" height="10.8" rx="4" fill="#ff7a3d"/>
+<text x="242.2" y="242.2" text-anchor="middle" font-size="12" font-weight="600" fill="#333">9.5ms</text>
+<text x="242.2" y="280.0" text-anchor="middle" font-size="12" fill="#666">median</text>
+<rect x="309.0" y="165.9" width="97.5" height="94.1" rx="4" fill="#ff7a3d"/>
+<text x="357.8" y="158.9" text-anchor="middle" font-size="12" font-weight="600" fill="#333">83.1ms</text>
+<text x="357.8" y="280.0" text-anchor="middle" font-size="12" fill="#666">p90</text>
+<rect x="424.5" y="50.0" width="97.5" height="210.0" rx="4" fill="#ff7a3d"/>
+<text x="473.2" y="43.0" text-anchor="middle" font-size="12" font-weight="600" fill="#333">185.5ms</text>
+<text x="473.2" y="280.0" text-anchor="middle" font-size="12" fill="#666">p95</text>
+</svg>

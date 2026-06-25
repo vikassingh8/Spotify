@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Each Express service exposes /metrics (prom-client default registry)
+  - job_name: spoty-services
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - "auth-service:4001"
+          - "catalog-service:4002"
+          - "playback-service:4003"
+          - "recommendation-service:4004"
+          - "ingestion-producer:4005"
+        labels:
+          app: spoty

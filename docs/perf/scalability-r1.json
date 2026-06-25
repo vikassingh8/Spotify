@@ -1,0 +1,161 @@
+{
+    "metrics": {
+        "checks": {
+            "fails": 338,
+            "passes": 26079,
+            "value": 0.9872052087670818
+        },
+        "http_req_failed": {
+            "passes": 338,
+            "fails": 39287,
+            "value": 0.008529968454258675
+        },
+        "http_req_sending": {
+            "avg": 0.13639502776025306,
+            "min": 0.005802,
+            "med": 0.027616,
+            "max": 130.613323,
+            "p(90)": 0.10731599999999987,
+            "p(95)": 0.22172459999999997
+        },
+        "http_req_connecting": {
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.1008978608454259,
+            "min": 0,
+            "med": 0,
+            "max": 127.869188
+        },
+        "iterations": {
+            "count": 13208,
+            "rate": 89.79865440993497
+        },
+        "data_sent": {
+            "rate": 45551.652424127846,
+            "count": 6699947
+        },
+        "http_req_duration{expected_response:true}": {
+            "med": 36.45529,
+            "max": 59958.02068,
+            "p(90)": 7502.215040000001,
+            "p(95)": 9451.953832799998,
+            "avg": 2476.87421213674,
+            "min": 0.181366
+        },
+        "vus_max": {
+            "min": 200,
+            "max": 1000,
+            "value": 1000
+        },
+        "http_req_blocked": {
+            "avg": 0.16182448436592076,
+            "min": 0.002001,
+            "med": 0.009004,
+            "max": 181.122775,
+            "p(90)": 0.017400599999999985,
+            "p(95)": 0.06883479999999999
+        },
+        "dropped_iterations": {
+            "count": 10794,
+            "rate": 73.38633220024516
+        },
+        "http_req_duration": {
+            "min": 0.181366,
+            "med": 37.528855,
+            "max": 60137.098231,
+            "p(90)": 7763.054425999999,
+            "p(95)": 9936.054005599992,
+            "avg": 2967.4028219645897,
+            "thresholds": {
+                "p(95)<800": true,
+                "p(99)<1500": true
+            }
+        },
+        "http_req_tls_handshaking": {
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0,
+            "min": 0,
+            "med": 0,
+            "max": 0
+        },
+        "http_req_waiting": {
+            "med": 36.779922,
+            "max": 60137.080622,
+            "p(90)": 7762.1144638,
+            "p(95)": 9935.879684199994,
+            "avg": 2966.811069309826,
+            "min": 0
+        },
+        "data_received": {
+            "count": 63766588,
+            "rate": 433536.78064148297
+        },
+        "iteration_duration": {
+            "p(95)": 25044.52204115,
+            "avg": 8909.439637132104,
+            "min": 1737.889313,
+            "med": 6076.9423405,
+            "max": 61150.402982,
+            "p(90)": 12075.301969000004
+        },
+        "vus": {
+            "min": 1,
+            "max": 1000,
+            "value": 1
+        },
+        "http_reqs": {
+            "count": 39625,
+            "rate": 269.4027620376797
+        },
+        "http_req_receiving": {
+            "avg": 0.45535762700315224,
+            "min": 0,
+            "med": 0.134862,
+            "max": 103.306573,
+            "p(90)": 0.5531855999999999,
+            "p(95)": 1.201050599999995
+        }
+    },
+    "setup_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJwcmVtaXVtQHNwb3R5LmRldiIsInJvbGUiOiJwcmVtaXVtIiwiaWF0IjoxNzgyMjA5MTI0LCJleHAiOjE3ODIyMTI3MjR9.npLc1C98hHWmHgiEqWLw5flcweBP4oDFJ4VVNrace5E"
+    },
+    "root_group": {
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {
+            "setup": {
+                "name": "setup",
+                "path": "::setup",
+                "id": "5c0f8025f7e0b6654089e5b00e950f1a",
+                "groups": {},
+                "checks": {
+                        "login 200": {
+                            "name": "login 200",
+                            "path": "::setup::login 200",
+                            "id": "647055af8ffe21e58084ae4b140cdda0",
+                            "passes": 1,
+                            "fails": 0
+                        }
+                    }
+            }
+        },
+        "checks": {
+            "catalog 200": {
+                "id": "eebf69297bd2d45f982329d2c19ee960",
+                "passes": 13208,
+                "fails": 0,
+                "name": "catalog 200",
+                "path": "::catalog 200"
+            },
+            "play handled": {
+                "path": "::play handled",
+                "id": "90390eddb747c20e982be378a639927c",
+                "passes": 12870,
+                "fails": 338,
+                "name": "play handled"
+            }
+        },
+        "name": ""
+    }
+}

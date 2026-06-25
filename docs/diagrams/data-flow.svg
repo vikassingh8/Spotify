@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="660" font-family="Segoe UI,Helvetica,Arial,sans-serif" viewBox="0 0 940 660">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#ff7a3d"/>
+    </marker>
+    <marker id="arrowo" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M10 0 L0 5 L10 10 z" fill="#ff7a3d"/>
+    </marker>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#1c1815" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .head  { fill:#ffffff; stroke:#ff7a3d; stroke-width:1.5; }
+      .hname { fill:#1c1815; font-size:12px; font-weight:700; }
+      .life  { stroke:#e0d4cb; stroke-width:1.4; }
+      .msg   { stroke:#ff7a3d; stroke-width:1.5; fill:none; }
+      .ret   { stroke:#ff7a3d; stroke-width:1.3; stroke-dasharray:5 3; fill:none; }
+      .self  { stroke:#c9a18a; stroke-width:1.3; fill:none; }
+      .mlabel{ fill:#3a322d; font-size:11px; }
+      .nlabel{ fill:#6b625c; font-size:10.5px; font-style:italic; }
+      .step  { fill:#ff7a3d; font-size:11px; font-weight:700; }
+      .loopbox { fill:#fff7f2; stroke:#ffcdb0; stroke-width:1.2; }
+      .looptag { fill:#ffffff; }
+      .looptxt { fill:#c5602f; font-size:10px; font-weight:700; }
+    </style>
+  </defs>
+
+  <rect width="940" height="660" fill="#ffffff"/>
+  <text x="470" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#1c1815">Spoty — Real-Time Data Flow</text>
+
+  <!-- ===== lifelines ===== -->
+  <!-- x centers: User 70, UI 190, GW 320, PB 450, K 560, SP 660, R 770, PG 850, RC 905 -->
+  <g class="life">
+    <line x1="70"  y1="86" x2="70"  y2="620"/>
+    <line x1="185" y1="86" x2="185" y2="620"/>
+    <line x1="315" y1="86" x2="315" y2="620"/>
+    <line x1="445" y1="86" x2="445" y2="620"/>
+    <line x1="560" y1="86" x2="560" y2="620"/>
+    <line x1="660" y1="86" x2="660" y2="620"/>
+    <line x1="765" y1="86" x2="765" y2="620"/>
+    <line x1="855" y1="86" x2="855" y2="620"/>
+  </g>
+
+  <!-- ===== actor/participant heads ===== -->
+  <g filter="url(#shadow)">
+    <rect class="head" x="28"  y="58" width="84"  height="30" rx="6"/>
+    <rect class="head" x="135" y="58" width="100" height="30" rx="6"/>
+    <rect class="head" x="262" y="58" width="106" height="30" rx="6"/>
+    <rect class="head" x="392" y="58" width="106" height="30" rx="6"/>
+    <rect class="head" x="525" y="58" width="70"  height="30" rx="6"/>
+    <rect class="head" x="622" y="58" width="76"  height="30" rx="6"/>
+    <rect class="head" x="730" y="58" width="70"  height="30" rx="6"/>
+    <rect class="head" x="808" y="58" width="94"  height="30" rx="6"/>
+  </g>
+  <g text-anchor="middle">
+    <text class="hname" x="70"  y="77">User</text>
+    <text class="hname" x="185" y="77">React UI</text>
+    <text class="hname" x="315" y="77">Gateway</text>
+    <text class="hname" x="445" y="77">playback</text>
+    <text class="hname" x="560" y="77">Kafka</text>
+    <text class="hname" x="660" y="77">Spark</text>
+    <text class="hname" x="765" y="77">Redis</text>
+    <text class="hname" x="855" y="77">PG / reco</text>
+  </g>
+
+  <!-- ===== messages ===== -->
+  <!-- 1 user click play -->
+  <text class="step" x="36" y="116">1</text>
+  <path class="msg" d="M70 122 L181 122" marker-end="url(#arrow)"/>
+  <text class="mlabel" x="76" y="116">click ▶ Play</text>
+
+  <!-- 2 UI -> GW -->
+  <text class="step" x="150" y="150">2</text>
+  <path class="msg" d="M185 156 L311 156" marker-end="url(#arrow)"/>
+  <text class="mlabel" x="191" y="150">POST /api/playback/play/:id  (JWT)</text>
+
+  <!-- 3 GW -> PB -->
+  <text class="step" x="280" y="184">3</text>
+  <path class="msg" d="M315 190 L441 190" marker-end="url(#arrow)"/>
+  <text class="mlabel" x="321" y="184">forward</text>
+
+  <!-- 4 PB self RBAC -->
+  <text class="step" x="410" y="218">4</text>
+  <path class="self" d="M445 210 C 505 214, 505 238, 449 242" marker-end="url(#arrow)"/>
+  <text class="nlabel" x="512" y="231">RBAC check (premium?)</text>
+
+  <!-- 5 PB -> Kafka produce -->
+  <text class="step" x="410" y="272">5</text>
+  <path class="msg" d="M445 278 L556 278" marker-end="url(#arrow)"/>
+  <text class="mlabel" x="451" y="272">produce play-event {userId, songId, genre}</text>
+
+  <!-- 6 PB -> UI presigned url (return) -->
+  <text class="step" x="150" y="306">6</text>
+  <path class="ret" d="M441 312 L189 312" marker-end="url(#arrowo)"/>
+  <text class="mlabel" x="200" y="306">presigned audio URL  ·  &lt;audio&gt; streams from MinIO</text>
+
+  <!-- ===== loop box: micro-batch ===== -->
+  <rect class="loopbox" x="520" y="340" width="395" height="150" rx="6"/>
+  <rect class="looptag" x="520" y="340" width="120" height="20" rx="3" stroke="#ffcdb0" stroke-width="1.2"/>
+  <text class="looptxt" x="530" y="354">loop  every 5s micro-batch</text>
+
+  <!-- 7 K -> SP consume -->
+  <text class="step" x="565" y="386">7</text>
+  <path class="msg" d="M560 392 L656 392" marker-end="url(#arrow)"/>
+  <text class="mlabel" x="566" y="386">consume</text>
+
+  <!-- 8 SP self anonymize+aggregate -->
+  <text class="step" x="630" y="418">8</text>
+  <path class="self" d="M660 410 C 712 414, 712 438, 664 442" marker-end="url(#arrow)"/>
+  <text class="nlabel" x="718" y="425">HMAC-hash userId · window + aggregate</text>
+
+  <!-- 9 SP -> Redis -->
+  <text class="step" x="630" y="466">9</text>
+  <path class="msg" d="M660 472 L761 472" marker-end="url(#arrow)"/>
+  <text class="mlabel" x="666" y="466">ZINCRBY leaderboards</text>
+
+  <!-- 10 SP -> PG -->
+  <text class="step" x="630" y="492" fill="#c5602f">10</text>
+  <path class="msg" d="M660 484 C 760 500, 800 500, 851 488" marker-end="url(#arrow)"/>
+
+  <!-- ===== trending poll ===== -->
+  <!-- 11 UI -> GW trending -->
+  <text class="step" x="150" y="528">11</text>
+  <path class="msg" d="M185 534 L311 534" marker-end="url(#arrow)"/>
+  <text class="mlabel" x="191" y="528">GET /api/recommendations/trending  (poll 4s)</text>
+
+  <!-- 12 GW -> RC -->
+  <text class="step" x="320" y="562">12</text>
+  <path class="msg" d="M315 568 L851 568" marker-end="url(#arrow)"/>
+  <text class="mlabel" x="360" y="562">forward → recommendation-service reads Redis (ZREVRANGE) + enriches from PG</text>
+
+  <!-- 13 RC -> UI return -->
+  <text class="step" x="150" y="600">13</text>
+  <path class="ret" d="M851 606 L189 606" marker-end="url(#arrowo)"/>
+  <text class="mlabel" x="200" y="600">live trending list</text>
+</svg>

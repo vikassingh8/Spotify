@@ -1,0 +1,24 @@
+node_modules/
+npm-debug.log*
+.env
+.env.local
+dist/
+build/
+coverage/
+*.log
+
+# generated demo audio
+data/seed/audio/*.wav
+
+# spark
+stream-processor/checkpoint/
+__pycache__/
+*.pyc
+
+# k8s/secrets
+infra/k8s/secrets.local.yaml
+
+# certs
+infra/gateway/certs/*.pem
+infra/gateway/certs/*.key
+infra/gateway/certs/*.crt

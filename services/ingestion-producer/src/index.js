@@ -3,6 +3,7 @@
 const express = require("express");
 const { metricsMiddleware, metricsHandler, client } = require("./lib/metrics");
 const { connectProducer, emitBatch, isReady } = require("./lib/kafka");
+const { authRequired, requireRole } = require("./lib/auth");
 
 const app = express();
 app.use(express.json());
@@ -97,20 +98,20 @@ app.get("/healthz", (_req, res) =>
 app.get("/metrics", metricsHandler);
 app.get("/status", (_req, res) => res.json({ ...state, catalogSize: catalog.length }));
 
-app.post("/start", (req, res) => {
+app.post("/start", authRequired, requireRole("admin"), (req, res) => {
   if (req.body && req.body.eventsPerSec) state.eventsPerSec = Number(req.body.eventsPerSec);
   if (req.body && req.body.users) state.users = Number(req.body.users);
   startSim();
   res.json({ started: true, ...state });
 });
 
-app.post("/stop", (_req, res) => {
+app.post("/stop", authRequired, requireRole("admin"), (_req, res) => {
   stopSim();
   res.json({ stopped: true, ...state });
 });
 
 // Fire a one-off burst of N events (useful for demos / stress spikes)
-app.post("/burst", async (req, res) => {
+app.post("/burst", authRequired, requireRole("admin"), async (req, res) => {
   const count = Math.min(Number(req.body && req.body.count) || 100, 20000);
   const sent = await emitBatch(TOPIC, buildBatch(count));
   state.totalProduced += sent;

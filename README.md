@@ -69,9 +69,13 @@ Then open:
 **Demo accounts** (password `Passw0rd!`): `free@spoty.dev`, `premium@spoty.dev`, `admin@spoty.dev`.
 
 ### See real-time processing in action
-1. Log in and play a few songs (or generate traffic):
+1. Log in and play a few songs (or generate traffic). Ingestion control
+   requires an **admin** token:
    ```bash
-   curl -X POST localhost:8080/api/ingestion/start -H 'content-type: application/json' -d '{"eventsPerSec":100}'
+   TOKEN=$(curl -s localhost:8080/api/auth/login -H 'content-type: application/json' \
+     -d '{"email":"admin@spoty.dev","password":"Passw0rd!"}' | jq -r .token)
+   curl -X POST localhost:8080/api/ingestion/start -H "Authorization: Bearer $TOKEN" \
+     -H 'content-type: application/json' -d '{"eventsPerSec":100}'
    ```
 2. Watch the **🔥 Trending now** panel update within seconds — events flowed
    Browser → Kafka → Spark → Redis → recommendation-service → UI.

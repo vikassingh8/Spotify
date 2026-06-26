@@ -45,10 +45,12 @@ app.get("/songs", async (req, res) => {
 });
 
 app.get("/songs/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({ error: "invalid song id" });
+  }
   try {
-    const { rows } = await pool.query(`${SONG_SELECT} WHERE s.id = $1`, [
-      req.params.id,
-    ]);
+    const { rows } = await pool.query(`${SONG_SELECT} WHERE s.id = $1`, [id]);
     if (!rows[0]) return res.status(404).json({ error: "song not found" });
     res.json(rows[0]);
   } catch (err) {

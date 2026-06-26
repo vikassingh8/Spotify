@@ -16,6 +16,15 @@ spec:
             - configMapRef: { name: spoty-config }
             - secretRef: { name: spoty-secrets }
           ports: [{ containerPort: 5432 }]
+          # Schema + seed run on first init (emptyDir => runs each fresh pod).
+          # Create the ConfigMap from data/seed first:
+          #   kubectl -n spoty create configmap spoty-seed \
+          #     --from-file=data/seed/01_schema.sql --from-file=data/seed/02_seed.sql
+          volumeMounts:
+            - { name: seed, mountPath: /docker-entrypoint-initdb.d, readOnly: true }
+      volumes:
+        - name: seed
+          configMap: { name: spoty-seed }
 ---
 apiVersion: v1
 kind: Service

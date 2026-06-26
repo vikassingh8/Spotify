@@ -41,12 +41,14 @@ Startup order is handled by health checks: Postgres/Kafka/Redis/MinIO become hea
 
 **Smoke test**
 ```bash
-curl localhost:8080/api/catalog/songs                       # catalog
+curl localhost:8080/api/catalog/songs                       # catalog (public)
+# admin token — playback works for any role; ingestion control is admin-only
 TOKEN=$(curl -s localhost:8080/api/auth/login -H 'content-type: application/json' \
-  -d '{"email":"premium@spoty.dev","password":"Passw0rd!"}' | jq -r .token)
+  -d '{"email":"admin@spoty.dev","password":"Passw0rd!"}' | jq -r .token)
 curl -X POST localhost:8080/api/playback/play/1 -H "Authorization: Bearer $TOKEN"
-curl -X POST localhost:8080/api/ingestion/start -H 'content-type: application/json' -d '{"eventsPerSec":100}'
-curl localhost:8080/api/recommendations/trending
+curl -X POST localhost:8080/api/ingestion/start -H "Authorization: Bearer $TOKEN" \
+  -H 'content-type: application/json' -d '{"eventsPerSec":100}'
+curl localhost:8080/api/recommendations/trending           # trending (public)
 ```
 
 **Configuration** lives in `.env` (see `.env.example`): JWT secret, anonymization

@@ -49,10 +49,14 @@ function publish(type, user, song) {
 
 // --- Start playback: enforce premium gating, emit event, return stream URL ---
 app.post("/play/:songId", authRequired, async (req, res) => {
+  const songId = Number(req.params.songId);
+  if (!Number.isInteger(songId) || songId <= 0) {
+    return res.status(400).json({ error: "invalid song id" });
+  }
   try {
     const { rows } = await pool.query(
       `SELECT id, title, genre, audio_key, premium_only FROM songs WHERE id = $1`,
-      [req.params.songId]
+      [songId]
     );
     const song = rows[0];
     if (!song) return res.status(404).json({ error: "song not found" });
@@ -76,13 +80,16 @@ app.post("/play/:songId", authRequired, async (req, res) => {
 // --- Generic interaction event (skip / like) ---
 app.post("/event", authRequired, async (req, res) => {
   const { songId, type } = req.body || {};
-  if (!songId || !["skip", "like"].includes(type)) {
-    return res.status(400).json({ error: "songId and type (skip|like) required" });
+  const id = Number(songId);
+  if (!Number.isInteger(id) || id <= 0 || !["skip", "like"].includes(type)) {
+    return res
+      .status(400)
+      .json({ error: "valid integer songId and type (skip|like) required" });
   }
   try {
     const { rows } = await pool.query(
       `SELECT id, genre FROM songs WHERE id = $1`,
-      [songId]
+      [id]
     );
     if (!rows[0]) return res.status(404).json({ error: "song not found" });
     await publish(type, req.user, rows[0]);

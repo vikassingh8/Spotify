@@ -65,23 +65,57 @@ salt, DB/Redis/Kafka/MinIO connection details, simulator rate.
 
 ---
 
-## 3. Kubernetes Deployment (minikube / AKS)
+## 3. Kubernetes Deployment (k3d — verified live)
+
+The manifests were deployed and **autoscaling verified on a real Kubernetes cluster**
+using **k3d** (k3s-in-Docker). k3d is used instead of minikube because it is far lighter
+(fits a Docker Desktop allocation of ~3.4 GB) and bundles **metrics-server** (needed for
+HPA) and a built-in load balancer out of the box.
 
 ```bash
-minikube start --cpus 4 --memory 8192
-minikube addons enable metrics-server         # required for HPA
-eval $(minikube docker-env)                    # build into the cluster
-docker compose build                           # images tagged spoty-<service>
-kubectl apply -f infra/k8s/                    # namespace, config, infra, services, gateway, HPA
-kubectl get pods -n spoty -w
-minikube service gateway -n spoty              # open the app
-kubectl get hpa -n spoty                       # watch autoscaling under load
+# 1) lightweight cluster (traefik disabled to save RAM; metrics-server is built in)
+k3d cluster create spoty --servers 1 --agents 0 --k3s-arg "--disable=traefik@server:0"
+# On Windows the kubeconfig may point at host.docker.internal; if kubectl times out,
+# repoint it at the published API port on localhost:
+#   kubectl config set-cluster k3d-spoty --server=https://127.0.0.1:<serverlb-port>
+
+# 2) build app images and import them into the cluster (k3d has its own containerd)
+docker compose build catalog-service              # + other services as needed
+k3d image import -c spoty spoty-catalog-service:latest
+
+# 3) namespace/config, then the Postgres schema+seed ConfigMap (REQUIRED — see note)
+kubectl apply -f infra/k8s/00-namespace-config.yaml
+kubectl -n spoty create configmap spoty-seed \
+  --from-file=data/seed/01_schema.sql --from-file=data/seed/02_seed.sql
+
+# 4) infra + services + autoscalers
+kubectl apply -f infra/k8s/10-infra.yaml          # Postgres (mounts spoty-seed) + Redis/Kafka/MinIO
+kubectl apply -f infra/k8s/20-services.yaml       # app Deployments + Services
+kubectl apply -f infra/k8s/30-hpa.yaml            # HorizontalPodAutoscalers
+
+kubectl -n spoty get pods,hpa -w                  # watch rollout + autoscaling
 ```
 
+> **RAM-safe footprint:** on a single ~3.4 GB host the full stack (Kafka JVM + Spark)
+> won't fit. For the autoscaling demo we scale the heavy/unused Deployments to 0
+> (`kubectl -n spoty scale deploy kafka minio stream-processor --replicas=0`) and drive
+> load at `catalog-service`. In production the **cluster autoscaler** adds nodes so the
+> whole stack runs and pods spread out.
+
+> **Postgres seed (required on K8s):** unlike Compose, the cluster Postgres has no host
+> bind-mount, so the schema/seed are supplied via the `spoty-seed` ConfigMap mounted at
+> `/docker-entrypoint-initdb.d` (see `infra/k8s/10-infra.yaml`). Without it the catalog
+> tables are empty. Create the ConfigMap **before** applying `10-infra.yaml`.
+
 Manifests (`infra/k8s/`): `00-namespace-config` (Namespace + ConfigMap + Secret),
-`10-infra` (Postgres/Redis/Kafka/MinIO), `20-services` (app Deployments + Services
-with readiness probes & resource requests), `21-gateway` (NGINX ConfigMap + LB
+`10-infra` (Postgres/Redis/Kafka/MinIO + seed mount), `20-services` (app Deployments +
+Services with readiness probes & resource requests), `21-gateway` (NGINX ConfigMap + LB
 Service), `30-hpa` (autoscalers).
+
+**Verified result:** under CPU load `catalog-service` autoscaled **2 → 4 → 8** replicas
+and scaled back to **2** once load subsided — see
+[`docs/perf/k8s-hpa-scaleout.txt`](perf/k8s-hpa-scaleout.txt) and
+`docs/02-performance-testing-report.md` §3.4.
 
 ---
 

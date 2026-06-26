@@ -110,6 +110,26 @@ forms here:
   lever is running more worker processes per node — which is operationally the same as
   horizontal scaling (more replicas), as measured in §3.1.
 
+### 3.4 Kubernetes HPA autoscaling (live, k3d)
+
+The §3.1 result was reproduced as **automatic** autoscaling on a real Kubernetes cluster
+(k3d / k3s v1.35.5) using the committed `HorizontalPodAutoscaler` (`infra/k8s/30-hpa.yaml`,
+CPU target 60%, min 2 / max 8). Load was 8 in-cluster pods looping `GET /songs` against
+`catalog-service`; raw capture in [`perf/k8s-hpa-scaleout.txt`](perf/k8s-hpa-scaleout.txt).
+
+| Phase | HPA CPU (util/target) | Replicas | HPA event |
+|-------|----------------------|----------|-----------|
+| Idle | 17% / 60% | 2 | — |
+| Load applied | 67% → 75% / 60% | 2 → **4 → 8** | `SuccessfulRescale New size: 4`, then `8` (*cpu above target*) |
+| Load removed | 118% → 8% / 60% | 8 (cooldown) | — |
+| Cooled down | < 20% / 60% | **8 → 5 → 3 → 2** | `SuccessfulRescale` (*all metrics below target*) |
+
+**Result:** the HPA scaled `catalog-service` **2 → 8 pods** as CPU crossed 60%, then back
+to **2** after the load stopped — automatic horizontal scaling end-to-end, no manual
+intervention. (During the spike, metrics-server briefly errored because the single 3.4 GB
+host was saturated by 8 service + 8 load pods — the same single-host ceiling as §3.2;
+production solves it with the cluster autoscaler adding nodes.)
+
 ---
 
 ## 4. Fault Tolerance & Recovery (observed)

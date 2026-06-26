@@ -91,14 +91,23 @@ docker compose up -d --scale playback-service=4
 k6 run infra/load-tests/scalability-test.js   # compare p95 before/after
 ```
 
-## Kubernetes (optional)
+## Kubernetes (k3d — verified)
+
+Autoscaling is verified live on k3s (via k3d). Full steps + the RAM-safe footprint are
+in [`docs/04`](docs/04-deployment-documentation.md) §3.
 
 ```bash
-minikube start && minikube addons enable metrics-server
-eval $(minikube docker-env) && docker compose build
-kubectl apply -f infra/k8s/
-kubectl get hpa -n spoty            # watch autoscaling
+k3d cluster create spoty --servers 1 --agents 0 --k3s-arg "--disable=traefik@server:0"
+docker compose build catalog-service
+k3d image import -c spoty spoty-catalog-service:latest
+kubectl apply -f infra/k8s/00-namespace-config.yaml
+kubectl -n spoty create configmap spoty-seed \
+  --from-file=data/seed/01_schema.sql --from-file=data/seed/02_seed.sql
+kubectl apply -f infra/k8s/10-infra.yaml -f infra/k8s/20-services.yaml -f infra/k8s/30-hpa.yaml
+kubectl -n spoty get hpa -w        # catalog-service autoscaled 2 -> 8 under load
 ```
+
+Result evidence: [`docs/perf/k8s-hpa-scaleout.txt`](docs/perf/k8s-hpa-scaleout.txt).
 
 ---
 

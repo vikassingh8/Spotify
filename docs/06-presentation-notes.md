@@ -48,7 +48,7 @@ Keep one browser tab on the **running app** (`localhost:8080`) and one on **Graf
 
 ## 6. Security, Privacy & Access Control (1.5 min)
 - **In transit:** TLS at gateway. **At rest:** encrypted Blob/Postgres/Redis.
-- **AuthN:** bcrypt + JWT. **AuthZ:** RBAC (free/premium/admin) — demo a free user
+- **AuthN:** bcrypt + JWT. **AuthZ:** RBAC (free/premium/admin); demo a free user
   getting **403** on a premium track.
 - **Privacy:** HMAC **pseudonymization in the pipeline** (raw id dropped before
   analytics), data minimization, **GDPR/CCPA** alignment (erasure, minimization).
@@ -56,7 +56,7 @@ Keep one browser tab on the **running app** (`localhost:8080`) and one on **Graf
 ## 7. Deployment, Monitoring & Cost (1.5 min)
 - **Deploy:** one-command Docker Compose locally; Kubernetes manifests + HPA;
   1:1 Azure mapping (Event Hubs, Blob, AKS, Azure DB, Cache for Redis).
-- **Monitor:** Prometheus + Grafana — latency, throughput, uptime, errors.
+- **Monitor:** Prometheus + Grafana for latency, throughput, uptime, and errors.
 - **Cost:** ~$5.2k/mo baseline; **egress dominates (~64%)**; CDN + reserved
   instances + spot + tiering → ~47% savings.
 

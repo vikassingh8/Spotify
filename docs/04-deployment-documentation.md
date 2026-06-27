@@ -113,7 +113,7 @@ Services with readiness probes & resource requests), `21-gateway` (NGINX ConfigM
 Service), `30-hpa` (autoscalers).
 
 **Verified result:** under CPU load `catalog-service` autoscaled **2 → 4 → 8** replicas
-and scaled back to **2** once load subsided — see
+and scaled back to **2** once load subsided. See
 [`docs/perf/k8s-hpa-scaleout.txt`](perf/k8s-hpa-scaleout.txt) and
 `docs/02-performance-testing-report.md` §3.4.
 

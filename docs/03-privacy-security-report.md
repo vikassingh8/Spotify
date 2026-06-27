@@ -55,8 +55,8 @@ from **Azure Key Vault**.
 | Store | Local prototype | Azure production |
 |-------|-----------------|------------------|
 | Audio objects | MinIO (SSE available) | **Blob Storage** SSE (AES-256, Microsoft- or customer-managed keys) |
-| Relational | Postgres volume | **Azure DB for PostgreSQL** — encryption at rest by default |
-| Cache | Redis | **Azure Cache for Redis** — encryption at rest + in transit |
+| Relational | Postgres volume | **Azure DB for PostgreSQL** (encryption at rest by default) |
+| Cache | Redis | **Azure Cache for Redis** (encryption at rest and in transit) |
 | Secrets | `.env` (dev only) | **Azure Key Vault** + AKS CSI secrets driver |
 
 ## 5. Privacy — Anonymization, Masking & Minimization
@@ -89,8 +89,8 @@ Privacy is enforced **in the data pipeline**, not just at storage:
 | **CCPA "do not sell"** | No third-party data sharing in scope |
 
 > Because analytics store only salted HMACs (pseudonyms) and the salt is held
-> separately, the analytics dataset is effectively de-identified — limiting breach
-> impact and simplifying compliance.
+> separately, the analytics dataset is effectively de-identified. This limits breach
+> impact and simplifies compliance.
 
 ## 7. Threats Addressed & Mitigations (OWASP-aligned)
 
@@ -98,7 +98,7 @@ Privacy is enforced **in the data pipeline**, not just at storage:
 |---------------|------------|
 | Broken authentication | bcrypt hashing, signed expiring JWTs, generic auth errors |
 | Broken access control | RBAC middleware + ownership checks; deny-by-default routes |
-| Injection (SQLi) | **Parameterized queries** everywhere (`pg` placeholders) — no string concatenation |
+| Injection (SQLi) | **Parameterized queries** everywhere (`pg` placeholders), no string concatenation |
 | Sensitive data exposure | Encryption in transit/at rest; pseudonymized analytics; secrets out of code |
 | Security misconfiguration | Minimal images, least-privilege, env-based secrets, no default creds in prod |
 | Insecure direct object refs | Presigned URLs are **time-limited** (1 h) and signed |

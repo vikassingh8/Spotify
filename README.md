@@ -3,7 +3,8 @@
 A Spotify-style music-streaming platform built as a **distributed, containerized,
 real-time data-processing system**. It ingests user interaction events, processes
 them in real time with **Apache Spark Structured Streaming**, and serves live
-recommendations — demonstrating scalability, fault tolerance, security, and privacy.
+recommendations. The project demonstrates scalability, fault tolerance, security,
+and privacy across the stack.
 
 > Academic capstone prototype. Runs locally on Docker Compose; designed to map
 > 1:1 onto **Microsoft Azure** managed services (see `docs/04-deployment-documentation.md`).
@@ -77,7 +78,7 @@ Then open:
    curl -X POST localhost:8080/api/ingestion/start -H "Authorization: Bearer $TOKEN" \
      -H 'content-type: application/json' -d '{"eventsPerSec":100}'
    ```
-2. Watch the **🔥 Trending now** panel update within seconds — events flowed
+2. Watch the **🔥 Trending now** panel update within seconds. The events have flowed
    Browser → Kafka → Spark → Redis → recommendation-service → UI.
 
 ---

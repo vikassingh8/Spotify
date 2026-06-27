@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate SVG charts from k6 --summary-export JSON files (no dependencies).
 
-Reads load-summary.json / stress-summary.json / scalability-r*.json from this
-folder and writes perf-*.svg charts embedded by docs/02-performance-testing-report.md.
+Reads load-summary.json, stress-summary.json, and cat-1x.json / cat-3x.json from
+this folder and writes perf-*.svg charts embedded by docs/02-performance-testing-report.md.
 """
 import json
 import os

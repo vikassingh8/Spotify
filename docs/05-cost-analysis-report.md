@@ -39,8 +39,8 @@ for a binding quote. Currency: USD.
 | **Registry** | Azure Container Registry | Standard | 20 |
 | | | **Baseline total** | **≈ $5,180 / mo** |
 
-> **Egress dominates.** Audio streaming bandwidth is by far the largest line item —
-> the single most important cost to optimize for a streaming platform.
+> **Egress dominates.** Audio streaming bandwidth is by far the largest line item,
+> and the single most important cost to optimize for a streaming platform.
 
 ---
 

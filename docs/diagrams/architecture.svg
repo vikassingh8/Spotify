@@ -24,7 +24,7 @@
   </defs>
 
   <rect width="940" height="720" fill="#ffffff"/>
-  <text x="470" y="34" text-anchor="middle" font-size="20" font-weight="700" class="edge">Spoty — High-Level Architecture</text>
+  <text x="470" y="34" text-anchor="middle" font-size="20" font-weight="700" class="edge">Spoty - High-Level Architecture</text>
 
   <!-- ================= CLIENT ================= -->
   <rect class="band" x="40" y="54" width="860" height="62" rx="8"/>
@@ -46,7 +46,7 @@
 
   <!-- ================= APPLICATION TIER ================= -->
   <rect class="band" x="40" y="222" width="860" height="96" rx="8"/>
-  <text class="blabel" x="56" y="240">APPLICATION TIER — Node.js 24 + Express 5 · stateless · autoscaled</text>
+  <text class="blabel" x="56" y="240">APPLICATION TIER - Node.js 24 + Express 5 · stateless · autoscaled</text>
   <g filter="url(#shadow)">
     <rect class="svc" x="56"  y="252" width="150" height="54" rx="6"/>
     <rect class="svc" x="226" y="252" width="150" height="54" rx="6"/>

@@ -24,7 +24,7 @@
   </defs>
 
   <rect width="940" height="700" fill="#ffffff"/>
-  <text x="470" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1c1815">Spoty — Azure Deployment Topology</text>
+  <text x="470" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1c1815">Spoty - Azure Deployment Topology</text>
 
   <!-- users -->
   <g filter="url(#shadow)"><rect class="svc" x="50" y="70" width="120" height="40" rx="20"/></g>

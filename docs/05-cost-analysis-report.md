@@ -40,7 +40,7 @@ for a binding quote. Currency: USD.
 | | | **Baseline total** | **≈ $5,180 / mo** |
 
 > **Egress dominates.** Audio streaming bandwidth is by far the largest line item,
-> and the single most important cost to optimize for a streaming platform.
+> and it is the main cost to bring down for a streaming platform.
 
 ---
 
@@ -56,9 +56,9 @@ App Gateway      ███                             5%
 Other            ████                            8%
 ```
 
-- **Egress** scales with listening hours and bitrate → biggest lever.
-- **Compute** scales with concurrent request load → autoscaling matters.
-- **Processing** scales with event volume → right-size Spark cluster + autoscale.
+- **Egress** scales with listening hours and bitrate, so reducing it has the largest effect.
+- **Compute** scales with concurrent request load, which is why autoscaling matters.
+- **Processing** scales with event volume; right-size the Spark cluster and let it autoscale.
 
 ---
 
@@ -99,9 +99,12 @@ Other            ████                            8%
 
 ## 6. Recommendations
 
-1. Put a **CDN** in front of Blob for audio (largest single saving).
-2. Buy **Reserved Instances / Savings Plans** for steady AKS + Postgres baseline.
-3. Run Spark/batch on a **spot** node pool with autoscaling.
-4. Enable **storage lifecycle tiering** for the long-tail catalog.
-5. Continuously **right-size** from Grafana/Azure Monitor utilization data.
-6. Track **cost per MAU** as the north-star efficiency metric.
+The biggest win by far is putting a CDN in front of Blob storage, since egress is ~64%
+of the bill and most of that traffic is cacheable audio. After that, the steady part of
+the platform (the AKS baseline and Postgres) is a good fit for reserved instances or a
+savings plan, while the bursty Spark/batch work can run on a cheaper spot node pool with
+autoscaling. Older, rarely-played tracks can move to Cool/Archive storage tiers.
+
+Beyond those, it's worth right-sizing SKUs against the actual utilization shown in
+Grafana/Azure Monitor rather than guessing, and keeping an eye on cost per MAU as the
+main efficiency number to track over time.

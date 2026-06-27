@@ -40,7 +40,7 @@ PG = dict(
 REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
 REDIS_PORT = int(os.environ.get("REDIS_PORT", "6379"))
 # Per-minute leaderboard buckets expire after this, so "trending" reflects
-# only recent activity (true trending-now) instead of growing forever.
+# only recent activity instead of growing without bound.
 TREND_TTL = int(os.environ.get("TRENDING_TTL_SEC", "1800"))
 
 EVENT_SCHEMA = StructType(

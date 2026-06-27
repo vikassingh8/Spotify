@@ -1,4 +1,5 @@
-// JWT verification + RBAC middleware (verify-only copy for this service).
+// Used by the recommendation service to verify JWTs and check roles.
+// No token signing here, only verification.
 const jwt = require("jsonwebtoken");
 
 function authRequired(req, res, next) {

@@ -1,4 +1,5 @@
-// JWT verification + RBAC middleware (verify-only copy for this service).
+// Playback auth: validate the bearer JWT and gate routes by role.
+// Verification only here (signing lives in auth-service).
 const jwt = require("jsonwebtoken");
 
 function authRequired(req, res, next) {

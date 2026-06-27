@@ -99,12 +99,12 @@ The real-time event path is shown below:
 | Services | **Node.js 24 + Express 5** | Lightweight, async, high-throughput I/O; quick to develop; clear modular structure |
 | Messaging | **Apache Kafka 4.2 (KRaft)** | Durable, partitioned, industry-standard event log; **Kafka-API compatible with Azure Event Hubs** |
 | Processing | **Apache Spark 4.1 (PySpark)** | Required distributed framework; unified streaming + batch; checkpoint-based fault tolerance |
-| Object store | **MinIO** | S3-compatible; identical API to **Azure Blob** → seamless cloud migration |
-| Relational | **PostgreSQL 18** | Robust ACID store for users/catalog/rollups |
+| Object store | **MinIO** | S3-compatible, so the same client code runs unchanged against **Azure Blob** in production |
+| Relational | **PostgreSQL 18** | ACID store for users, catalog, and rollups |
 | Cache | **Redis 8** | Sub-millisecond reads; sorted sets are ideal for leaderboards |
 | Edge | **NGINX** | Mature reverse proxy, load balancer, TLS terminator |
 | Orchestration | **Docker + Kubernetes** | Containerization + declarative scaling, self-healing, HPA |
-| Monitoring | **Prometheus + Grafana** | De-facto standard metrics + dashboards |
+| Monitoring | **Prometheus + Grafana** | Widely used, well-documented metrics and dashboards |
 | Load testing | **k6** | Scriptable, JS-based load/stress/scalability testing |
 
 **Cloud mapping (Azure):** Kafka→Event Hubs, MinIO→Blob Storage, Postgres→Azure DB for
@@ -120,7 +120,7 @@ Managed Grafana. Detailed in [`04-deployment-documentation.md`](04-deployment-do
 - **Loose coupling via events:** asynchronous Kafka pipeline isolates write path
   from analytics.
 - **Fault tolerance by default:** durable log + checkpointing + restart policies.
-- **Security & privacy by design:** least-privilege RBAC, encryption, pseudonymization.
+- **Security and privacy built in:** least-privilege RBAC, encryption, pseudonymization.
 - **Observability:** every service exposes Prometheus metrics.
 
 ## 9. Deliverables

@@ -37,13 +37,13 @@ Keep one browser tab on the **running app** (`localhost:8080`) and one on **Graf
 - **Streaming vs batch:** same Spark engine; we use micro-batch streaming for
   freshness. **Parallelism:** Kafka partitions × Spark executors. **Fault tolerance:**
   checkpointing resumes from the last offset.
-- 🔴 **Live demo:** start traffic (`/api/ingestion/start`), watch **Trending now**
+- **Live demo:** start traffic (`/api/ingestion/start`), watch **Trending now**
   update in seconds.
 
 ## 5. Scalability & Load Handling (2 min)
 - **Stateless services** (JWT) scale horizontally; NGINX/K8s load-balances.
 - **HPA** autoscales on CPU (60%); cluster autoscaler adds nodes; Kafka buffers spikes.
-- 🔴 **Show results** from `02-performance-testing-report.md`: near-linear throughput
+- **Show results** from `02-performance-testing-report.md`: near-linear throughput
   with replicas; graceful degradation + self-recovery under stress.
 
 ## 6. Security, Privacy & Access Control (1.5 min)

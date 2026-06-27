@@ -44,7 +44,7 @@ def svg_bars(title, data, fname, unit="", color="#ff7a3d", fmt="{:.0f}"):
         parts.append(f'<text x="{x+bw/2:.1f}" y="{y-7:.1f}" text-anchor="middle" font-size="12" font-weight="600" fill="#333">{fmt.format(v)}{unit}</text>')
         parts.append(f'<text x="{x+bw/2:.1f}" y="{top+ph+20:.1f}" text-anchor="middle" font-size="12" fill="#666">{lbl}</text>')
     parts.append("</svg>")
-    with open(os.path.join(PERF, fname), "w") as f:
+    with open(os.path.join(PERF, fname), "w", encoding="utf-8") as f:
         f.write("\n".join(parts))
     print("wrote", fname)
 
@@ -59,7 +59,7 @@ def main():
     if load_d:
         dur = metric(load_d, "http_req_duration")
         svg_bars(
-            "Load Test — HTTP latency (ms)",
+            "Load Test - HTTP latency (ms)",
             [("avg", dur.get("avg", 0)), ("median", dur.get("med", 0)),
              ("p90", dur.get("p(90)", 0)), ("p95", dur.get("p(95)", 0))],
             "perf-latency.svg", unit="ms", fmt="{:.1f}",
@@ -82,7 +82,7 @@ def main():
     if c3:
         scal.append(("3 replicas", metric(c3, "http_reqs").get("rate", 0)))
     if scal:
-        svg_bars("Horizontal Scaling — throughput (req/s)", scal,
+        svg_bars("Horizontal Scaling - throughput (req/s)", scal,
                  "perf-scalability.svg", unit="/s", color="#45d6c4", fmt="{:.0f}")
 
     # 4) Scaling effect on latency (p95)
@@ -92,7 +92,7 @@ def main():
     if c3:
         lat.append(("3 replicas", metric(c3, "http_req_duration").get("p(95)", 0)))
     if lat:
-        svg_bars("Horizontal Scaling — p95 latency (ms)", lat,
+        svg_bars("Horizontal Scaling - p95 latency (ms)", lat,
                  "perf-scalability-latency.svg", unit="ms", color="#ff7a3d", fmt="{:.0f}")
 
 

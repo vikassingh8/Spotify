@@ -1,5 +1,5 @@
-// JWT helpers + RBAC middleware. Shared (copied) across services that
-// need to verify tokens. auth-service additionally signs tokens.
+// Verifies JWTs and checks roles so the ingestion controls (/start, /stop,
+// /burst) can be limited to admins. Tokens are issued by auth-service.
 const jwt = require("jsonwebtoken");
 
 function signToken(user) {

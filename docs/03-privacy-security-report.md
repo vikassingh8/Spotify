@@ -35,11 +35,11 @@ from **Azure Key Vault**.
 
 | Action | free | premium | admin |
 |--------|:----:|:-------:|:-----:|
-| Browse / search | ✅ | ✅ | ✅ |
-| Play standard track | ✅ | ✅ | ✅ |
-| Play premium track | ❌ 403 | ✅ | ✅ |
-| Manage own playlists | ✅ | ✅ | ✅ |
-| Admin operations | ❌ | ❌ | ✅ |
+| Browse / search | Yes | Yes | Yes |
+| Play standard track | Yes | Yes | Yes |
+| Play premium track | No (403) | Yes | Yes |
+| Manage own playlists | Yes | Yes | Yes |
+| Admin operations | No | No | Yes |
 
 ## 3. Secure Communication (Encryption in Transit)
 

@@ -1,4 +1,4 @@
-# 🎧 Spoty — Scalable & Secure Distributed System for Real-Time Data Processing
+# Spoty — Scalable & Secure Distributed System for Real-Time Data Processing
 
 A Spotify-style music-streaming platform built as a **distributed, containerized,
 real-time data-processing system**. It ingests user interaction events, processes
@@ -62,7 +62,7 @@ Then open:
 
 | URL | What |
 |-----|------|
-| http://localhost:8080 | 🎧 Spoty web player (through the gateway) |
+| http://localhost:8080 | Spoty web player (through the gateway) |
 | http://localhost:3000 | Grafana dashboards (anonymous viewer) |
 | http://localhost:9090 | Prometheus |
 | http://localhost:9001 | MinIO console (`spotyadmin` / `spotyadmin_pw`) |
@@ -78,7 +78,7 @@ Then open:
    curl -X POST localhost:8080/api/ingestion/start -H "Authorization: Bearer $TOKEN" \
      -H 'content-type: application/json' -d '{"eventsPerSec":100}'
    ```
-2. Watch the **🔥 Trending now** panel update within seconds. The events have flowed
+2. Watch the **Trending now** panel update within seconds. The events have flowed
    Browser → Kafka → Spark → Redis → recommendation-service → UI.
 
 ---

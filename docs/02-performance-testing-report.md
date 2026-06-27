@@ -152,7 +152,7 @@ and **error rate**. All 6 service targets report `up=1` during tests.
 
 ![Throughput](perf/perf-throughput.svg)
 
-> 📸 *Add a Grafana screenshot here during a live run for the submission.*
+> Note: add a Grafana screenshot here from a live run for the submission.
 
 ---
 

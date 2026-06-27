@@ -1,4 +1,5 @@
-// JWT verification + RBAC middleware (verify-only copy for this service).
+// Token checks for the catalog service: verify the JWT, then enforce roles.
+// This service only verifies tokens; auth-service is the one that signs them.
 const jwt = require("jsonwebtoken");
 
 function authRequired(req, res, next) {

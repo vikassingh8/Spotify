@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="560" height="320" font-family="Segoe UI,sans-serif">
 <rect width="560" height="320" fill="#ffffff"/>
-<text x="280.0" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1c1815">Horizontal Scaling — p95 latency (ms)</text>
+<text x="280.0" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1c1815">Horizontal Scaling - p95 latency (ms)</text>
 <line x1="60" y1="260" x2="540" y2="260" stroke="#ddd"/>
 <rect x="78.0" y="50.0" width="213.0" height="210.0" rx="4" fill="#ff7a3d"/>
 <text x="184.5" y="43.0" text-anchor="middle" font-size="12" font-weight="600" fill="#333">347ms</text>

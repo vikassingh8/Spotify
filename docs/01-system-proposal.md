@@ -96,12 +96,12 @@ The real-time event path is shown below:
 
 | Component | Choice | Justification |
 |-----------|--------|---------------|
-| Services | **Node.js 24 + Express 5** | Lightweight, async, high-throughput I/O; quick to develop; clear modular structure |
-| Messaging | **Apache Kafka 4.2 (KRaft)** | Durable, partitioned, industry-standard event log; **Kafka-API compatible with Azure Event Hubs** |
-| Processing | **Apache Spark 4.1 (PySpark)** | Required distributed framework; unified streaming + batch; checkpoint-based fault tolerance |
+| Services | **Node.js + Express** | Lightweight, async, high-throughput I/O; quick to develop; clear modular structure |
+| Messaging | **Apache Kafka (KRaft)** | Durable, partitioned, industry-standard event log; **Kafka-API compatible with Azure Event Hubs** |
+| Processing | **Apache Spark (PySpark)** | Required distributed framework; unified streaming + batch; checkpoint-based fault tolerance |
 | Object store | **MinIO** | S3-compatible, so the same client code runs unchanged against **Azure Blob** in production |
-| Relational | **PostgreSQL 18** | ACID store for users, catalog, and rollups |
-| Cache | **Redis 8** | Sub-millisecond reads; sorted sets are ideal for leaderboards |
+| Relational | **PostgreSQL** | ACID store for users, catalog, and rollups |
+| Cache | **Redis** | Sub-millisecond reads; sorted sets are ideal for leaderboards |
 | Edge | **NGINX** | Mature reverse proxy, load balancer, TLS terminator |
 | Orchestration | **Docker + Kubernetes** | Containerization + declarative scaling, self-healing, HPA |
 | Monitoring | **Prometheus + Grafana** | Widely used, well-documented metrics and dashboards |

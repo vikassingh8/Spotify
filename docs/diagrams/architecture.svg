@@ -32,7 +32,7 @@
   <g filter="url(#shadow)">
     <rect class="svc" x="370" y="70" width="200" height="38" rx="6"/>
   </g>
-  <text class="name" x="470" y="88" text-anchor="middle">React 19 Web Player</text>
+  <text class="name" x="470" y="88" text-anchor="middle">React Web Player</text>
   <text class="sub"  x="470" y="102" text-anchor="middle">SPA · audio element · live polling</text>
 
   <!-- ================= EDGE ================= -->
@@ -46,7 +46,7 @@
 
   <!-- ================= APPLICATION TIER ================= -->
   <rect class="band" x="40" y="222" width="860" height="96" rx="8"/>
-  <text class="blabel" x="56" y="240">APPLICATION TIER - Node.js 24 + Express 5 · stateless · autoscaled</text>
+  <text class="blabel" x="56" y="240">APPLICATION TIER - Node.js + Express · stateless · autoscaled</text>
   <g filter="url(#shadow)">
     <rect class="svc" x="56"  y="252" width="150" height="54" rx="6"/>
     <rect class="svc" x="226" y="252" width="150" height="54" rx="6"/>
@@ -72,7 +72,7 @@
     <rect class="ds"  x="150" y="386" width="220" height="44" rx="6"/>
     <rect class="svc" x="540" y="386" width="250" height="44" rx="6"/>
   </g>
-  <text class="name" x="260" y="406" text-anchor="middle">Apache Kafka 4.2</text>
+  <text class="name" x="260" y="406" text-anchor="middle">Apache Kafka</text>
   <text class="sub"  x="260" y="421" text-anchor="middle">play-events topic (KRaft)</text>
   <text class="name" x="665" y="406" text-anchor="middle">PySpark Structured Streaming</text>
   <text class="sub"  x="665" y="421" text-anchor="middle">anonymize · window · aggregate</text>
@@ -85,9 +85,9 @@
     <rect class="ds" x="360" y="508" width="220" height="44" rx="6"/>
     <rect class="ds" x="630" y="508" width="220" height="44" rx="6"/>
   </g>
-  <text class="name" x="200" y="528" text-anchor="middle">PostgreSQL 18</text>
+  <text class="name" x="200" y="528" text-anchor="middle">PostgreSQL</text>
   <text class="sub"  x="200" y="543" text-anchor="middle">users · catalog · rollups</text>
-  <text class="name" x="470" y="528" text-anchor="middle">Redis 8</text>
+  <text class="name" x="470" y="528" text-anchor="middle">Redis</text>
   <text class="sub"  x="470" y="543" text-anchor="middle">trending leaderboards</text>
   <text class="name" x="740" y="528" text-anchor="middle">MinIO / Blob</text>
   <text class="sub"  x="740" y="543" text-anchor="middle">audio objects</text>

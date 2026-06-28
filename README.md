@@ -1,4 +1,4 @@
-# Spoty — Scalable & Secure Distributed System for Real-Time Data Processing
+# Spoty: Scalable & Secure Distributed System for Real-Time Data Processing
 
 A Spotify-style music-streaming platform built as a **distributed, containerized,
 real-time data-processing system**. It ingests user interaction events, processes
@@ -21,16 +21,16 @@ Browser (React) → NGINX gateway → Express microservices → Kafka → Spark 
 
 | Layer | Technology | Azure equivalent |
 |-------|-----------|------------------|
-| Frontend | React 19 + Vite | Static Web Apps / CDN |
+| Frontend | React + Vite | Static Web Apps / CDN |
 | API gateway / LB | NGINX | Application Gateway |
-| Services | Node.js 24 + **Express 5** | AKS |
-| Event streaming | Apache Kafka 4.2 (KRaft) | Event Hubs (Kafka API) |
-| Real-time processing | **PySpark 4.1** Structured Streaming | HDInsight / Synapse / Databricks |
+| Services | Node.js + **Express** | AKS |
+| Event streaming | Apache Kafka (KRaft) | Event Hubs (Kafka API) |
+| Real-time processing | **PySpark** Structured Streaming | HDInsight / Synapse / Databricks |
 | Object storage | MinIO | Blob Storage |
-| Relational DB | PostgreSQL 18 | Azure DB for PostgreSQL |
-| Cache / leaderboards | Redis 8 | Azure Cache for Redis |
+| Relational DB | PostgreSQL | Azure DB for PostgreSQL |
+| Cache / leaderboards | Redis | Azure Cache for Redis |
 | Monitoring | Prometheus + Grafana | Azure Monitor + Managed Grafana |
-| Load testing | k6 | — |
+| Load testing | k6 | - |
 
 Full diagrams (SVG): [`docs/diagrams/`](docs/diagrams/).
 
@@ -45,7 +45,7 @@ Full diagrams (SVG): [`docs/diagrams/`](docs/diagrams/).
 | `playback-service` | 4003 | Presigned audio URLs (MinIO) + emits play/skip/like to Kafka |
 | `recommendation-service` | 4004 | Live "trending" + personalized recs from Spark output |
 | `ingestion-producer` | 4005 | Simulates concurrent listeners (also the load engine) |
-| `stream-processor` | — | PySpark job: Kafka → anonymize → aggregate → Redis/Postgres |
+| `stream-processor` | - | PySpark job: Kafka → anonymize → aggregate → Redis/Postgres |
 
 ---
 
@@ -92,7 +92,7 @@ docker compose up -d --scale playback-service=4
 k6 run infra/load-tests/scalability-test.js   # compare p95 before/after
 ```
 
-## Kubernetes (k3d — verified)
+## Kubernetes (k3d, verified)
 
 Autoscaling is verified live on k3s (via k3d). Full steps + the RAM-safe footprint are
 in [`docs/04`](docs/04-deployment-documentation.md) §3.
@@ -126,11 +126,11 @@ Result evidence: [`docs/perf/k8s-hpa-scaleout.txt`](docs/perf/k8s-hpa-scaleout.t
 ## Repository layout
 
 ```
-services/         Express 5 microservices (Node 24)
+services/         Express microservices (Node.js)
 stream-processor/ PySpark Structured Streaming job
-frontend/         React 19 + Vite web player
+frontend/         React + Vite web player
 infra/            gateway (NGINX), k8s manifests, monitoring, load-tests
 data/seed/        DB schema, seed catalog, demo-audio generator
-docs/             6 reports + SVG diagrams
+docs/             reports, slides + SVG diagrams
 docker-compose.yml
 ```

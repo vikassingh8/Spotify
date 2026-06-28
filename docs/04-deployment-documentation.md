@@ -1,4 +1,4 @@
-# Deployment Documentation — Spoty
+# Deployment Documentation: Spoty
 
 Step-by-step guide to deploy Spoty **locally** (Docker Compose), on **Kubernetes**
 (minikube/AKS), and the **Azure managed-service** target architecture, plus
@@ -42,7 +42,7 @@ Startup order is handled by health checks: Postgres/Kafka/Redis/MinIO become hea
 **Smoke test**
 ```bash
 curl localhost:8080/api/catalog/songs                       # catalog (public)
-# admin token — playback works for any role; ingestion control is admin-only
+# admin token. playback works for any role; ingestion control is admin-only
 TOKEN=$(curl -s localhost:8080/api/auth/login -H 'content-type: application/json' \
   -d '{"email":"admin@spoty.dev","password":"Passw0rd!"}' | jq -r .token)
 curl -X POST localhost:8080/api/playback/play/1 -H "Authorization: Bearer $TOKEN"
@@ -65,7 +65,7 @@ salt, DB/Redis/Kafka/MinIO connection details, simulator rate.
 
 ---
 
-## 3. Kubernetes Deployment (k3d — verified live)
+## 3. Kubernetes Deployment (k3d, verified live)
 
 The manifests were deployed and **autoscaling verified on a real Kubernetes cluster**
 using **k3d** (k3s-in-Docker). k3d is used instead of minikube because it is far lighter
@@ -83,7 +83,7 @@ k3d cluster create spoty --servers 1 --agents 0 --k3s-arg "--disable=traefik@ser
 docker compose build catalog-service              # + other services as needed
 k3d image import -c spoty spoty-catalog-service:latest
 
-# 3) namespace/config, then the Postgres schema+seed ConfigMap (REQUIRED — see note)
+# 3) namespace/config, then the Postgres schema+seed ConfigMap (REQUIRED, see note)
 kubectl apply -f infra/k8s/00-namespace-config.yaml
 kubectl -n spoty create configmap spoty-seed \
   --from-file=data/seed/01_schema.sql --from-file=data/seed/02_seed.sql
@@ -174,7 +174,7 @@ kubectl apply -f infra/k8s/      # update image refs to spotyacr.azurecr.io/*
 
 ## 5. Monitoring & Maintenance
 
-- **Dashboards:** Grafana "Spoty — System Overview" (latency, throughput, uptime,
+- **Dashboards:** Grafana "Spoty: System Overview" (latency, throughput, uptime,
   errors). On Azure use **Azure Monitor + Managed Grafana**.
 - **Health:** every service exposes `/healthz` (used by K8s readiness probes) and
   `/metrics` (Prometheus).

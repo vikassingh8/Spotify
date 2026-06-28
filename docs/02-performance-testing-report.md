@@ -1,4 +1,4 @@
-# Performance Testing Report — Spoty
+# Performance Testing Report: Spoty
 
 Methodology and **measured results** for load, stress, and scalability testing of the
 Spoty distributed system, plus fault-tolerance behaviour. Tests were driven by **k6**
@@ -21,7 +21,7 @@ python docs/perf/generate_charts.py
 
 ---
 
-## 1. Load Test — expected peak traffic
+## 1. Load Test: expected peak traffic
 
 Profile: closed-loop, ramp 0 → 50 → 100 VUs over 3.5 min, realistic journey
 (browse catalog → trending → play).
@@ -45,7 +45,7 @@ stays short and latency stays low.
 
 ---
 
-## 2. Stress Test — beyond capacity + recovery
+## 2. Stress Test: beyond capacity + recovery
 
 Profile: ramp to **600 VUs** (far beyond provisioned capacity), hold, then drop to 0.
 
@@ -67,7 +67,7 @@ afterward, so no data is lost.
 
 ---
 
-## 3. Scalability Test — horizontal & vertical
+## 3. Scalability Test: horizontal & vertical
 
 ### 3.1 Horizontal scaling (isolated, clean measurement)
 
@@ -81,7 +81,7 @@ DNS (verified in gateway access logs: requests spread across all replica IPs).
 |----------|-----------|-------------|--------|
 | 1 | 311 req/s | 347 ms | 0 % |
 | 3 | **760 req/s** | **218 ms** | 0 % |
-| **Gain** | **2.44× throughput** | **−37 % latency** | — |
+| **Gain** | **2.44× throughput** | **-37% latency** | - |
 
 ![Horizontal scaling throughput](perf/perf-scalability.svg)
 ![Horizontal scaling latency](perf/perf-scalability-latency.svg)
@@ -120,9 +120,9 @@ CPU target 60%, min 2 / max 8). Load was 8 in-cluster pods looping `GET /songs` 
 
 | Phase | HPA CPU (util/target) | Replicas | HPA event |
 |-------|----------------------|----------|-----------|
-| Idle | 17% / 60% | 2 | — |
+| Idle | 17% / 60% | 2 | - |
 | Load applied | 67% → 75% / 60% | 2 → **4 → 8** | `SuccessfulRescale New size: 4`, then `8` (*cpu above target*) |
-| Load removed | 118% → 8% / 60% | 8 (cooldown) | — |
+| Load removed | 118% → 8% / 60% | 8 (cooldown) | - |
 | Cooled down | < 20% / 60% | **8 → 5 → 3 → 2** | `SuccessfulRescale` (*all metrics below target*) |
 
 **Result:** the HPA scaled `catalog-service` **2 → 8 pods** as CPU crossed 60%, then back
@@ -146,7 +146,7 @@ in §3.2; production solves it with the cluster autoscaler adding nodes.)
 
 ## 5. Monitoring Evidence
 
-Prometheus scrapes every service's `/metrics`; the Grafana dashboard **"Spoty — System
+Prometheus scrapes every service's `/metrics`; the Grafana dashboard **"Spoty: System
 Overview"** (`localhost:3000`) plots **throughput**, **p95 latency**, **uptime (`up`)**,
 and **error rate**. All 6 service targets report `up=1` during tests.
 
@@ -161,7 +161,7 @@ and **error rate**. All 6 service targets report `up=1` during tests.
 - **Healthy under peak:** 170 req/s with p95 185 ms and **0 % errors**.
 - **Resilient under overload:** degrades gracefully to a ~250 req/s ceiling with **0 %
   errors** and self-recovers, with no data loss.
-- **Scales horizontally:** 1→3 replicas gave **2.44× throughput** and −37 % p95 on an
+- **Scales horizontally:** 1→3 replicas gave **2.44× throughput** and -37% p95 on an
   isolated endpoint.
 - **Honest bottleneck:** a single host caps total capacity; real horizontal scaling needs
   multiple nodes. In production that is provided by the Kubernetes HPA plus cluster

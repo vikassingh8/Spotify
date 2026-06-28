@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spoty: Distributed Real-Time Data Processing</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme">
+
+  <style>
+    :root{
+      --accent:#1db954;          /* spotify green */
+      --accent-2:#3fc1ff;        /* cool cyan     */
+      --ink:#e9edf1;
+      --muted:#9aa6b2;
+      --panel:#15191f;
+      --panel-2:#1c222b;
+      --line:#2a323d;
+    }
+    .reveal{ font-family:"Segoe UI", Inter, system-ui, sans-serif; color:var(--ink); }
+    .reveal .slides{ text-align:left; }
+    .reveal section{ height:100%; }
+    .reveal h1,.reveal h2,.reveal h3,.reveal h4{
+      font-weight:700; letter-spacing:-.01em; color:#fff; text-transform:none;
+    }
+    .reveal h1{ font-size:2.5em; }
+    .reveal h2{ font-size:1.55em; margin-bottom:.5em; }
+    .reveal h3{ font-size:1.1em; color:var(--accent-2); }
+    .reveal p, .reveal li{ font-size:.62em; line-height:1.45; color:var(--ink); }
+    .reveal strong{ color:#fff; }
+    .reveal em{ color:var(--accent-2); font-style:normal; }
+    .reveal a{ color:var(--accent); }
+
+    .kicker{
+      display:inline-block; font-size:.42em; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--accent); border:1px solid var(--line); border-radius:999px;
+      padding:.35em .9em; margin-bottom:.6em;
+    }
+    .rule{ height:3px; width:90px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:0; margin:.2em 0 .9em; border-radius:3px; }
+
+    .grid{ display:grid; gap:.6em; }
+    .grid.two{ grid-template-columns:1fr 1fr; }
+    .grid.three{ grid-template-columns:1fr 1fr 1fr; }
+    .grid.four{ grid-template-columns:repeat(4,1fr); }
+
+    .card{
+      background:var(--panel); border:1px solid var(--line); border-radius:14px;
+      padding:.7em .85em;
+    }
+    .card h3{ margin:0 0 .25em; font-size:.95em; }
+    .card p, .card li{ font-size:.56em; margin:.2em 0; color:var(--muted); }
+    .card.accent{ border-color:var(--accent); }
+
+    .stat{ text-align:center; }
+    .stat .big{ font-size:1.9em; font-weight:800; color:var(--accent); line-height:1; }
+    .stat .lbl{ font-size:.5em; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-top:.35em; }
+
+    .flow{
+      display:flex; align-items:center; flex-wrap:wrap; gap:.35em; font-size:.5em;
+      margin-top:.4em;
+    }
+    .flow .node{
+      background:var(--panel-2); border:1px solid var(--line); border-radius:8px;
+      padding:.4em .6em; color:var(--ink); white-space:nowrap;
+    }
+    .flow .node.k{ border-color:var(--accent); color:#fff; }
+    .flow .arrow{ color:var(--accent-2); font-weight:700; }
+
+    .reveal table{ font-size:.5em; }
+    .reveal table th{ color:var(--accent-2); border-bottom:1px solid var(--line); }
+    .reveal table td{ border-bottom:1px solid var(--line); }
+
+    .badge{ display:inline-block; font-size:.78em; padding:.12em .6em; border-radius:6px;
+      background:rgba(29,185,84,.15); color:var(--accent); border:1px solid rgba(29,185,84,.4); }
+
+    .footer{ position:absolute; bottom:14px; left:0; right:0; text-align:center;
+      font-size:.32em; color:var(--muted); letter-spacing:.05em; }
+    .muted{ color:var(--muted); }
+    .center{ text-align:center; }
+    .reveal section img{ border-radius:12px; border:1px solid var(--line); background:#fff; }
+    ul.tight li{ margin:.18em 0; }
+    .pill-row{ display:flex; gap:.4em; flex-wrap:wrap; margin-top:.5em; }
+    .pill{ font-size:.45em; padding:.3em .7em; border:1px solid var(--line); border-radius:999px; color:var(--muted); }
+  </style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+  <!-- 1. TITLE -->
+  <section data-background-gradient="radial-gradient(circle at 30% 20%, #16241c, #0b0e12 60%)">
+    <span class="kicker">Distributed Systems Capstone</span>
+    <h1>Spoty</h1>
+    <hr class="rule">
+    <h3 style="font-size:1.15em; color:#fff; font-weight:600;">A Scalable &amp; Secure Distributed System for Real-Time Data Processing</h3>
+    <p class="muted" style="font-size:.65em;">A Spotify-style music-streaming platform, with a live event pipeline from player to trending in seconds.</p>
+    <div class="pill-row">
+      <span class="pill">Node.js / Express</span>
+      <span class="pill">Apache Kafka</span>
+      <span class="pill">Apache Spark</span>
+      <span class="pill">Redis · Postgres · Blob</span>
+      <span class="pill">Docker · Kubernetes · Azure</span>
+    </div>
+    <div class="footer">University Capstone · Live demo + verified evidence</div>
+  </section>
+
+  <!-- 2. PROBLEM & REQUIREMENTS -->
+  <section>
+    <span class="kicker">01 · The Problem</span>
+    <h2>Why a distributed system?</h2>
+    <hr class="rule">
+    <div class="grid two">
+      <div class="card">
+        <h3>The challenge</h3>
+        <p>Stream audio to millions <strong>and</strong> process a firehose of spiky interaction events in real time to power live trending &amp; recommendations.</p>
+        <p>A monolith can't absorb bursty, high-volume traffic, so we need an event buffer, independent scaling, and parallel processing.</p>
+      </div>
+      <div class="card accent">
+        <h3>Target scale</h3>
+        <div class="grid three" style="margin-top:.3em;">
+          <div class="stat"><div class="big">500k</div><div class="lbl">Monthly Active Users</div></div>
+          <div class="stat"><div class="big">25k</div><div class="lbl">concurrent</div></div>
+          <div class="stat"><div class="big">50M</div><div class="lbl">events/day</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top:.6em;">
+      <div class="card"><h3>Functional</h3><p>Auth + RBAC · catalog &amp; playback · event ingestion · real-time trending &amp; recommendations.</p></div>
+      <div class="card"><h3>Non-functional</h3><p>Scalability · low latency · high availability · fault tolerance · security · privacy.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. ARCHITECTURE -->
+  <section>
+    <span class="kicker">02 · Architecture: the showcase</span>
+    <h2>End-to-end data flow</h2>
+    <hr class="rule">
+    <div class="flow">
+      <span class="node">React Player</span><span class="arrow">→</span>
+      <span class="node">NGINX Gateway</span><span class="arrow">→</span>
+      <span class="node">Express Services</span><span class="arrow">→</span>
+      <span class="node k">Kafka</span><span class="arrow">→</span>
+      <span class="node k">PySpark Streaming</span><span class="arrow">→</span>
+      <span class="node">Redis / Postgres / Blob</span><span class="arrow">→</span>
+      <span class="node">Client</span>
+    </div>
+    <div class="grid three" style="margin-top:.7em;">
+      <div class="card"><h3>Decoupled write path</h3><p>Playback returns <strong>instantly</strong> after publishing to Kafka, so analytics happen asynchronously.</p></div>
+      <div class="card"><h3>Independent scaling</h3><p>Stateless JSON Web Token (JWT) services scale horizontally behind NGINX / Kubernetes (K8s) load-balancing.</p></div>
+      <div class="card"><h3>Event buffer</h3><p>Kafka absorbs spikes; Spark consumes at its own pace, so no backpressure on users.</p></div>
+    </div>
+    <p class="muted center" style="font-size:.45em; margin-top:.6em;">Full diagram: <code>docs/diagrams/architecture.svg</code></p>
+  </section>
+
+  <!-- 4. REAL-TIME PROCESSING -->
+  <section>
+    <span class="kicker">03 · Real-Time Processing</span>
+    <h2>The streaming pipeline</h2>
+    <hr class="rule">
+    <div class="grid two">
+      <div class="card">
+        <h3>PySpark Structured Streaming</h3>
+        <ul class="tight">
+          <li>Consumes <em>play-events</em> topic every <strong>5s</strong> (micro-batch)</li>
+          <li><strong>Anonymizes</strong> user id with Hash-based Message Authentication Code (HMAC) before any analytics</li>
+          <li>Windows events per minute, aggregates plays per song / genre</li>
+          <li>Writes <strong>leaderboards → Redis</strong>, rollups → Postgres</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Why it's robust</h3>
+        <ul class="tight">
+          <li><strong>Parallelism:</strong> Kafka partitions × Spark executors</li>
+          <li><strong>Fault tolerance:</strong> checkpointing resumes from last offset</li>
+          <li><strong>Freshness:</strong> trending decays via per-minute Time-To-Live (TTL) Redis buckets</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent center" style="margin-top:.6em;">
+      <p style="font-size:.6em; color:var(--ink);">▶ <strong>Live demo:</strong> start traffic → <em>Trending Now</em> updates within seconds</p>
+    </div>
+  </section>
+
+  <!-- 5. SCALABILITY / PERFORMANCE -->
+  <section>
+    <span class="kicker">04 · Scalability: measured</span>
+    <h2>Real performance evidence</h2>
+    <hr class="rule">
+    <div class="grid four">
+      <div class="card stat"><div class="big">170</div><div class="lbl">requests/sec sustained</div></div>
+      <div class="card stat"><div class="big">185ms</div><div class="lbl">95th-percentile latency</div></div>
+      <div class="card stat"><div class="big">0%</div><div class="lbl">errors @ load</div></div>
+      <div class="card stat"><div class="big">2.44×</div><div class="lbl">throughput, 1→3 replicas</div></div>
+    </div>
+    <div class="grid two" style="margin-top:.6em;">
+      <div class="card">
+        <h3>Horizontal scaling</h3>
+        <p>1→3 catalog replicas → <strong>2.44× throughput, -37% p95</strong>. Near-linear gains; stateless services + NGINX round-robin.</p>
+      </div>
+      <div class="card">
+        <h3>Stress &amp; recovery</h3>
+        <p>~250 req/s ceiling, p95 6.6s, still <strong>0% errors</strong>, graceful degradation, then self-recovery.</p>
+      </div>
+    </div>
+    <p class="muted center" style="font-size:.45em; margin-top:.5em;">Captured with k6 · charts in <code>docs/perf/</code></p>
+  </section>
+
+  <!-- 5b. KUBERNETES / HPA EVIDENCE -->
+  <section>
+    <span class="kicker">04 · Live Autoscaling</span>
+    <h2>Kubernetes Horizontal Pod Autoscaler (HPA): verified live</h2>
+    <hr class="rule">
+    <div class="grid two">
+      <div class="card accent">
+        <h3>Autoscale on CPU (target 60%)</h3>
+        <div class="flow" style="font-size:.7em; justify-content:center; margin:.5em 0;">
+          <span class="node">2</span><span class="arrow">→</span>
+          <span class="node k">4</span><span class="arrow">→</span>
+          <span class="node k">8</span><span class="arrow">→</span>
+          <span class="node">2</span>
+        </div>
+        <p class="center">catalog-service pods under load, then back down</p>
+      </div>
+      <div class="card">
+        <h3>Two live clusters</h3>
+        <ul class="tight">
+          <li><span class="badge">k3d / k3s</span> local cluster + metrics-server</li>
+          <li><span class="badge">Azure AKS</span> public Load Balancer (LB) IP, seeded data served end-to-end</li>
+          <li>Both torn down after verification (cost control)</li>
+        </ul>
+      </div>
+    </div>
+    <p class="muted center" style="font-size:.45em; margin-top:.5em;">Evidence: <code>docs/perf/k8s-hpa-scaleout.txt</code> · §3.4 deployment docs</p>
+  </section>
+
+  <!-- 6. SECURITY & PRIVACY -->
+  <section>
+    <span class="kicker">05 · Security &amp; Privacy</span>
+    <h2>Defense in depth</h2>
+    <hr class="rule">
+    <div class="grid three">
+      <div class="card">
+        <h3>Authentication</h3>
+        <p>bcrypt password hashing + <strong>JWT</strong> sessions · auth rate-limiting · admin-gated ingestion controls.</p>
+      </div>
+      <div class="card">
+        <h3>Authorization: Role-Based Access Control (RBAC)</h3>
+        <p>free / premium / admin roles · free user gets <strong>403</strong> on a premium track (verified).</p>
+      </div>
+      <div class="card">
+        <h3>Encryption</h3>
+        <p>Transport Layer Security (TLS) in transit at gateway · encrypted Blob / Postgres / Redis at rest.</p>
+      </div>
+    </div>
+    <div class="card accent" style="margin-top:.6em;">
+      <h3>Privacy by design</h3>
+      <p><strong>HMAC pseudonymization inside the pipeline</strong>: raw user id dropped <em>before</em> analytics (verified: 0 raw IDs downstream). Data minimization · General Data Protection Regulation (GDPR) / California Consumer Privacy Act (CCPA) alignment (erasure, minimization).</p>
+    </div>
+  </section>
+
+  <!-- 7. DEPLOYMENT, MONITORING & COST -->
+  <section>
+    <span class="kicker">06 · Deploy · Monitor · Cost</span>
+    <h2>From laptop to cloud</h2>
+    <hr class="rule">
+    <div class="grid two">
+      <div class="card">
+        <h3>Deploy</h3>
+        <ul class="tight">
+          <li>One-command <strong>Docker Compose</strong> locally (14 containers)</li>
+          <li>Kubernetes manifests + HPA</li>
+          <li>1:1 <strong>Azure</strong> map: Event Hubs · Blob Storage · Azure Kubernetes Service (AKS) · Azure Database · Cache for Redis</li>
+        </ul>
+        <h3 style="margin-top:.4em;">Monitor</h3>
+        <p>Prometheus + Grafana: latency, throughput, uptime, errors.</p>
+      </div>
+      <div class="card">
+        <h3>Cost (Azure, ~500k Monthly Active Users)</h3>
+        <div class="stat" style="margin:.2em 0;"><div class="big" style="font-size:1.4em;">≈ $5.2k</div><div class="lbl">baseline / month</div></div>
+        <p><strong>Egress dominates (~64%)</strong> of spend.</p>
+        <p>Content Delivery Network (CDN) + reserved instances + spot + storage tiering → <strong>~47% savings</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CHALLENGES & TRADE-OFFS -->
+  <section>
+    <span class="kicker">07 · Trade-offs</span>
+    <h2>Engineering decisions</h2>
+    <hr class="rule">
+    <div class="grid three">
+      <div class="card"><h3>CAP theorem (Consistency, Availability, Partition tolerance)</h3><p>Analytics are <strong>eventually consistent</strong> (a few seconds behind) to keep the write path fast &amp; available.</p></div>
+      <div class="card"><h3>Latency vs durability</h3><p>Async processing adds slight delay but guarantees <strong>no lost events</strong> (Kafka buffer).</p></div>
+      <div class="card"><h3>Cost vs performance</h3><p>Reserved / spot capacity vs always-on headroom.</p></div>
+    </div>
+    <div class="grid two" style="margin-top:.6em;">
+      <div class="card">
+        <h3>Challenges solved</h3>
+        <p>At-least-once vs exactly-once semantics · coordinating an async pipeline with a responsive UI · Spark–Kafka jar provisioning (warmed Ivy cache at build).</p>
+      </div>
+      <div class="card">
+        <h3>Future work</h3>
+        <p>CDN for audio · Machine Learning (ML) recommender (collaborative filtering) · multi-region active-active · exactly-once idempotent sinks · OpenID Connect (OIDC) via Entra ID.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. CLOSING -->
+  <section data-background-gradient="radial-gradient(circle at 70% 30%, #16241c, #0b0e12 60%)">
+    <span class="kicker">Summary</span>
+    <h2>What was delivered</h2>
+    <hr class="rule">
+    <div class="grid two">
+      <div class="card accent">
+        <h3>Built &amp; verified</h3>
+        <ul class="tight">
+          <li>Full distributed prototype, runs end-to-end</li>
+          <li>Real perf data: <strong>2.44×</strong> scaling, 0% errors</li>
+          <li>Live K8s HPA <strong>2→8→2</strong> on k3d <em>and</em> Azure AKS</li>
+          <li>RBAC + HMAC privacy verified</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Documentation</h3>
+        <ul class="tight">
+          <li>Proposal · Design · Performance</li>
+          <li>Privacy &amp; Security · Deployment · Cost</li>
+          <li>Architecture, data-flow, Entity-Relationship (ER) &amp; deployment diagrams</li>
+        </ul>
+      </div>
+    </div>
+    <p class="center" style="font-size:.7em; margin-top:.7em;"><strong>Spoty</strong>: a distributed system that's not just designed, but <em>measured and proven</em>.</p>
+    <div class="footer">Thank you · Questions?</div>
+  </section>
+
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash:true, slideNumber:'c/t', transition:'slide',
+    width:1280, height:720, margin:0.06,
+    controls:true, progress:true
+  });
+</script>
+</body>
+</html>

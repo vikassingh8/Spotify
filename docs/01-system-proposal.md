@@ -1,4 +1,4 @@
-# System Proposal — Spoty: Scalable & Secure Distributed System for Real-Time Data Processing
+# System Proposal - Spoty: Scalable & Secure Distributed System for Real-Time Data Processing
 
 **Project:** Distributed cloud system for real-time music streaming (Spotify-style)
 **Prototype:** Local Docker Compose stack mapped to Microsoft Azure

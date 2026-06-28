@@ -2,7 +2,7 @@
   "annotations": { "list": [] },
   "editable": true,
   "schemaVersion": 39,
-  "title": "Spoty — System Overview",
+  "title": "Spoty: System Overview",
   "tags": ["spoty"],
   "time": { "from": "now-15m", "to": "now" },
   "refresh": "5s",

@@ -1,4 +1,4 @@
-# Privacy & Security Report — Spoty
+# Privacy & Security Report: Spoty
 
 This report details the security and privacy controls implemented in Spoty, the
 threats they mitigate, and compliance with GDPR/CCPA. Controls are organized by the
@@ -59,7 +59,7 @@ from **Azure Key Vault**.
 | Cache | Redis | **Azure Cache for Redis** (encryption at rest and in transit) |
 | Secrets | `.env` (dev only) | **Azure Key Vault** + AKS CSI secrets driver |
 
-## 5. Privacy — Anonymization, Masking & Minimization
+## 5. Privacy: Anonymization, Masking & Minimization
 
 Privacy is enforced **in the data pipeline**, not just at storage:
 
